@@ -1,0 +1,48 @@
+version: "3.8"
+
+services:
+
+  node-app:
+
+    build:
+      context: ./applications/node-service
+
+    container_name: node-app
+
+    ports:
+      - "5000:5000"
+
+    depends_on:
+      - mysql
+
+    environment:
+      DB_HOST: mysql
+      DB_USER: devops
+      DB_PASSWORD: devops123
+      DB_NAME: company
+
+
+  mysql:
+
+    image: mysql:8
+
+    container_name: mysql-db
+
+    restart: always
+
+    environment:
+      MYSQL_DATABASE: company
+      MYSQL_USER: devops
+      MYSQL_PASSWORD: devops123
+      MYSQL_ROOT_PASSWORD: root123
+
+    ports:
+      - "3307:3306"
+
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+
+volumes:
+
+  mysql-data:
