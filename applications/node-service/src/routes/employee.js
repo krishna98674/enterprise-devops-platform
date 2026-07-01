@@ -97,5 +97,34 @@ message:"Employee deleted"
 });
 
 
+// UPDATE employee
+
+router.put("/:id", (req, res) => {
+
+    const id = req.params.id;
+
+    const { name, email, department, salary } = req.body;
+
+    db.query(
+
+        "UPDATE employees SET name=?, email=?, department=?, salary=? WHERE id=?",
+
+        [name, email, department, salary, id],
+
+        (err, result) => {
+
+            if (err) {
+                return res.status(500).json(err);
+            }
+
+            res.json({
+                message: "Employee updated"
+            });
+
+        }
+
+    );
+
+});
 
 module.exports = router;
