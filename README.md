@@ -9,6 +9,7 @@ Whenever code is pushed to GitHub, Jenkins automatically detects the changes, bu
 This project was built to practice real-world DevOps concepts such as Continuous Integration (CI), Continuous Deployment (CD), containerization, version control, and deployment automation.
 
 ---
+Jenkins deployment test 
 
 ## Technologies Used
 
@@ -104,7 +105,7 @@ http://localhost:5000/version
 
 ## Future Improvements
 
-* Jenkins Pipeline
+* Jenkins Freestyle
 * Nginx Reverse Proxy
 * Prometheus Monitoring
 * Grafana Dashboards
