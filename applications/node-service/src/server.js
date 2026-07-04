@@ -2,13 +2,14 @@ const express = require("express");
 
 const app = express();
 
+const PORT = process.env.PORT || 5000;
+
 app.use(express.json());
 app.use(express.static("src/public"));
 
 const employeeRoutes = require("./routes/employee");
 
-
-app.use("/employees",employeeRoutes);
+app.use("/employees", employeeRoutes);
 
 app.get("/version", (req, res) => {
     res.json({
@@ -20,8 +21,6 @@ app.get("/version", (req, res) => {
     });
 });
 
-app.listen(5000,()=>{
-
-console.log("Server running on port 5000-build version 2");
-
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
 });
