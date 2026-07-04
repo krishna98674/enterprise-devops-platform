@@ -1,74 +1,113 @@
+// Get the form
 const form = document.getElementById("employeeForm");
+
+// Store the employee id while editing
 let editId = null;
+
+
+// =========================
+// Load all employees
+// =========================
+
 async function loadEmployees() {
 
+    // Get data from backend
     const response = await fetch("/employees");
+
+    // Convert response to JSON
     const employees = await response.json();
 
+    // Get table body
     const table = document.getElementById("employeeTable");
 
+    // Clear old rows
     table.innerHTML = "";
 
-    employees.forEach(employee => {
+    // Loop through all employees
+    for (let i = 0; i < employees.length; i++) {
 
-        table.innerHTML += `
-        <tr>
-            <td>${employee.id}</td>
-            <td>${employee.name}</td>
-            <td>${employee.email}</td>
-            <td>${employee.department}</td>
-            <td>${employee.salary}</td>
+        let employee = employees[i];
 
-<td>
-    <button onclick="editEmployee(${employee.id})">Edit</button>
+        table.innerHTML +=
+        "<tr>" +
+            "<td>" + employee.id + "</td>" +
+            "<td>" + employee.name + "</td>" +
+            "<td>" + employee.email + "</td>" +
+            "<td>" + employee.department + "</td>" +
+            "<td>" + employee.salary + "</td>" +
 
-    <button onclick="deleteEmployee(${employee.id})">Delete</button>
-</td>
-        </tr>
-        `;
+            "<td>" +
+                "<button onclick='editEmployee(" + employee.id + ")'>Edit</button> " +
+                "<button onclick='deleteEmployee(" + employee.id + ")'>Delete</button>" +
+            "</td>" +
+        "</tr>";
 
-    });
+    }
 
 }
 
-form.addEventListener("submit", async function(e){
 
-    e.preventDefault();
+// =========================
+// Save Employee
+// =========================
 
-    const employee = {
+form.addEventListener("submit", saveEmployee);
 
-        name: document.getElementById("name").value,
-        email: document.getElementById("email").value,
-        department: document.getElementById("department").value,
-        salary: document.getElementById("salary").value
+async function saveEmployee(event) {
+
+    // Stop page refresh
+    event.preventDefault();
+
+    // Read values from form
+    let name = document.getElementById("name").value;
+    let email = document.getElementById("email").value;
+    let department = document.getElementById("department").value;
+    let salary = document.getElementById("salary").value;
+
+    // Create object
+    let employee = {
+
+        name: name,
+        email: email,
+        department: department,
+        salary: salary
 
     };
 
-    if(editId === null){
 
-        await fetch("/employees",{
+    // ADD
+    if (editId == null) {
 
-            method:"POST",
+        await fetch("/employees", {
 
-            headers:{
-                "Content-Type":"application/json"
+            method: "POST",
+
+            headers: {
+
+                "Content-Type": "application/json"
+
             },
 
-            body:JSON.stringify(employee)
+            body: JSON.stringify(employee)
 
         });
 
-    }else{
+    }
 
-        await fetch(`/employees/${editId}`,{
+    // UPDATE
+    else {
 
-            method:"PUT",
+        await fetch("/employees/" + editId, {
 
-            headers:{
-                "Content-Type":"application/json"
+            method: "PUT",
+
+            headers: {
+
+                "Content-Type": "application/json"
+
             },
 
-            body:JSON.stringify(employee)
+            body: JSON.stringify(employee)
 
         });
 
@@ -78,46 +117,72 @@ form.addEventListener("submit", async function(e){
 
     }
 
+    // Clear form
     form.reset();
 
+    // Reload table
     loadEmployees();
 
-});
+}
 
-async function editEmployee(id){
 
-    const response=await fetch("/employees");
+// =========================
+// Edit Employee
+// =========================
 
-    const employees=await response.json();
+async function editEmployee(id) {
 
-    const employee=employees.find(emp=>emp.id===id);
+    const response = await fetch("/employees");
 
-    document.getElementById("name").value=employee.name;
-    document.getElementById("email").value=employee.email;
-    document.getElementById("department").value=employee.department;
-    document.getElementById("salary").value=employee.salary;
+    const employees = await response.json();
 
-    editId=id;
+    // Find employee
+    for (let i = 0; i < employees.length; i++) {
 
-    document.querySelector("button[type='submit']").innerText="Update Employee";
+        if (employees[i].id == id) {
+
+            document.getElementById("name").value = employees[i].name;
+            document.getElementById("email").value = employees[i].email;
+            document.getElementById("department").value = employees[i].department;
+            document.getElementById("salary").value = employees[i].salary;
+
+            break;
+
+        }
+
+    }
+
+    editId = id;
+
+    document.querySelector("button[type='submit']").innerText = "Update Employee";
 
 }
+
+
+// =========================
+// Delete Employee
+// =========================
 
 async function deleteEmployee(id) {
 
-    if (!confirm("Are you sure you want to delete this employee?")) {
+    let answer = confirm("Are you sure?");
+
+    if (answer == false) {
+
         return;
+
     }
 
-    const response = await fetch(`/employees/${id}`, {
+    await fetch("/employees/" + id, {
+
         method: "DELETE"
+
     });
 
-    if (response.ok) {
-        loadEmployees();
-    } else {
-        alert("Delete failed!");
-    }
+    loadEmployees();
+
 }
 
+
+// Start program
 loadEmployees();
