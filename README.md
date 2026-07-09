@@ -2,25 +2,47 @@
 
 ## Project Overview
 
-This project demonstrates a complete CI/CD workflow for a Dockerized Node.js application using Jenkins Freestyle jobs.
+This project demonstrates a complete CI/CD pipeline for a Dockerized Node.js and MySQL application using Jenkins, Docker, and GitHub.
 
-Whenever code is pushed to GitHub, Jenkins automatically detects the changes, builds a new Docker image, deploys the updated application using Docker Compose, and makes it available for testing.
+Whenever code is pushed to GitHub, Jenkins automatically detects the changes, builds a new Docker image, and deploys the latest version of the application using Docker Compose.
 
-This project was built to practice real-world DevOps concepts such as Continuous Integration (CI), Continuous Deployment (CD), containerization, version control, and deployment automation.
+The project was created to practice real-world DevOps concepts such as Continuous Integration (CI), Continuous Deployment (CD), containerization, and automated deployments.
 
 ---
 
 ## Technologies Used
 
-* Ubuntu Linux
-* Git
-* GitHub
-* Node.js
-* Express.js
-* MySQL
-* Docker
-* Docker Compose
-* Jenkins (Freestyle Job)
+- Ubuntu Linux
+- Git
+- GitHub
+- Node.js
+- Express.js
+- MySQL
+- Docker
+- Docker Compose
+- Jenkins (Freestyle Job)
+
+---
+
+## Project Structure
+
+```text
+enterprise-devops-platform
+│
+├── applications
+│   └── node-service
+│       ├── src
+│       │   ├── public
+│       │   ├── routes
+│       │   ├── db.js
+│       │   └── server.js
+│       ├── Dockerfile
+│       ├── package.json
+│       └── package-lock.json
+│
+├── docker-compose.yml
+└── README.md
+```
 
 ---
 
@@ -29,60 +51,78 @@ This project was built to practice real-world DevOps concepts such as Continuous
 ```text
 Developer
     │
-git push
+ git push
     │
     ▼
 GitHub Repository
     │
+ GitHub Webhook
     ▼
 Jenkins Freestyle Job
     │
-    ▼
-Docker Build
-    │
+Build Docker Image
     ▼
 Docker Compose
     │
-    ├── Node.js Application
-    └── MySQL Database
+ ├── Node.js Application
+ └── MySQL Database
 ```
 
 ---
 
 ## Features
 
-* Dockerized Node.js REST API
-* MySQL database integration
-* Automatic Docker image build
-* Automatic deployment using Docker Compose
-* Automatic Jenkins build after Git push
-* Employee REST API
-* Version API for deployment verification
+- Dockerized Node.js application
+- Express.js REST API
+- MySQL database integration
+- CRUD Operations (Create, Read, Update, Delete)
+- Automatic Docker image build
+- Automatic deployment using Docker Compose
+- Automatic Jenkins build after Git push
+- Employee Management System
+- Version API for deployment verification
 
 ---
 
-## API Endpoints
+## REST API Endpoints
 
-| Method | Endpoint         | Description                        |
-| ------ | ---------------- | ---------------------------------- |
-| GET    | `/employees`     | Get all employees                  |
-| POST   | `/employees`     | Add a new employee                 |
-| DELETE | `/employees/:id` | Delete an employee                 |
-| GET    | `/version`       | Check deployed application version |
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/employees` | Get all employees |
+| POST | `/employees` | Add a new employee |
+| PUT | `/employees/:id` | Update an employee |
+| DELETE | `/employees/:id` | Delete an employee |
+| GET | `/version` | Check deployed application version |
 
 ---
 
 ## How to Run
 
-1. Clone the repository.
-2. Start Docker.
-3. Run:
+### 1. Clone the Repository
+
+```bash
+git clone <your-github-repository-url>
+```
+
+### 2. Go to the Project Directory
+
+```bash
+cd enterprise-devops-platform
+```
+
+### 3. Build and Start the Containers
 
 ```bash
 docker compose up -d --build
 ```
 
-4. Open:
+### 4. Open the Application
+
+```
+http://localhost:5000
+```
+
+### 5. Check Application Version
 
 ```
 http://localhost:5000/version
@@ -92,22 +132,78 @@ http://localhost:5000/version
 
 ## CI/CD Workflow
 
-1. Modify the application.
-2. Commit the changes.
-3. Push the code to GitHub.
-4. Jenkins detects the new commit.
-5. Jenkins builds a new Docker image.
-6. Docker Compose deploys the latest version.
-7. Verify the deployment using the `/version` endpoint.
+```text
+Developer
+
+      │
+      ▼
+
+Git Push
+
+      │
+      ▼
+
+GitHub Repository
+
+      │
+      ▼
+
+GitHub Webhook
+
+      │
+      ▼
+
+Jenkins Freestyle Job
+
+      │
+      ▼
+
+Build Docker Image
+
+      │
+      ▼
+
+Docker Compose Deployment
+
+      │
+      ▼
+
+Updated Application Running
+```
+
+---
+
+## Sample API Response
+
+### GET `/version`
+
+```json
+{
+  "application": "Enterprise DevOps Platform",
+  "version": "2.0",
+  "deployedBy": "Jenkins",
+  "deployedAt": "2026-07-03T14:30:00.000Z",
+  "author": "Krishna"
+}
+```
 
 ---
 
 ## Future Improvements
 
-* Jenkins Freestyle
-* Nginx Reverse Proxy
-* Prometheus Monitoring
-* Grafana Dashboards
-* Cloud Deployment
-* Java Spring Boot Service
-* PHP Service
+- Jenkins Pipeline
+- Nginx Reverse Proxy
+- Prometheus Monitoring
+- Grafana Dashboards
+- Kubernetes Deployment
+- Cloud Deployment (AWS/Azure/GCP)
+- Java Spring Boot Service
+- PHP Microservice
+
+---
+
+## Author
+
+**Krishna Parajuli**
+
+DevOps Practice Project using Docker, Jenkins, Node.js, Express.js, and MySQL.

@@ -1,10 +1,10 @@
 const mysql = require("mysql2");
 
 const pool = mysql.createPool({
-    host: "node25690-env-1224360.ktm.yetiappcloud.com",
+    host: "localhost",
     port: 3306,
-    user: "root",
-    password: "DLYaes48532",
+    user: "nodeuser",
+    password: "node123",   // Change this if your nodeuser password is different
     database: "company",
     waitForConnections: true,
     connectionLimit: 10,
